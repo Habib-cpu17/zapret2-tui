@@ -1,0 +1,46 @@
+name: zapret2-tui release
+
+on:
+  push:
+    tags: ['tui-v*']
+  pull_request:
+    paths: ['tui/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: tui/go.mod
+      - name: Test
+        run: |
+          go vet ./...
+          go test ./...
+      - name: Build
+        run: |
+          mkdir -p dist
+          ver="${GITHUB_REF_NAME#tui-v}"
+          for t in amd64: arm64: arm:7; do
+            arch="${t%%:*}"; arm="${t#*:}"
+            name="zapret2-tui-linux-$arch"; [ "$arch" = arm ] && name=zapret2-tui-linux-armv7
+            CGO_ENABLED=0 GOOS=linux GOARCH=$arch GOARM=$arm \
+              go build -trimpath -ldflags "-s -w -X main.version=$ver" -o "dist/$name" ./cmd/zapret2-tui
+            (cd dist && sha256sum "$name" > "$name.sha256")
+          done
+          ls -l dist
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/tui-v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            tui/dist/*
+            install.sh
