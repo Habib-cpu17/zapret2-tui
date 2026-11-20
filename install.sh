@@ -1,11 +1,11 @@
 #!/bin/sh
 # One-line installer for zapret2-tui:
-#   curl -fsSL https://raw.githubusercontent.com/Habib-cpu17/zapret2/master/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/Habib-cpu17/zapret2-tui/master/install.sh | sh
 # Downloads the zapret2-tui binary for this CPU from the fork's GitHub releases,
 # verifies its sha256, installs it to /usr/local/bin and starts it.
 set -eu
 
-REPO="${ZAPRET_TUI_REPO:-Habib-cpu17/zapret2}"
+REPO="${ZAPRET_TUI_REPO:-Habib-cpu17/zapret2-tui}"
 DEST="${ZAPRET_TUI_DEST:-/usr/local/bin}"
 
 die() { echo "error: $*" >&2; exit 1; }

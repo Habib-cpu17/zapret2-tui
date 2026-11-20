@@ -9,7 +9,7 @@ OpenWrt, BSD, macOS and Windows still use the upstream scripts.
 ## Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Habib-cpu17/zapret2/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Habib-cpu17/zapret2-tui/master/install.sh | sh
 ```
 
 This puts `zapret2-tui` in `/usr/local/bin` and opens it. On first run the
